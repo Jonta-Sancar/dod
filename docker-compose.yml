@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    image: nginx-localstack-app:dod-fsa
+    container_name: nginx-localstack
+    ports:
+      - "8000:80"
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,sqs,cloudwatch
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=test
+      - AWS_SECRET_ACCESS_KEY=test
+      # Uncomment se precisar de recursos que usam Docker interno (ex.: Lambda):
+      # - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - localstack-data:/var/lib/localstack
+      # - /var/run/docker.sock:/var/run/docker.sock # Necessário para alguns serviços.
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  localstack-data:
