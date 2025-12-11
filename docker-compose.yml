@@ -5,7 +5,7 @@ services:
     container_name: nginx-localstack
     ports:
       - "8000:80"
-      - "4566:4566"
+      - "4567:4566"
     environment:
       - SERVICES=s3,sqs,cloudwatch
       - AWS_DEFAULT_REGION=us-east-1
